@@ -30,12 +30,23 @@ html {
 
 }
 
-.tooltip-aumentar-cursor {
-    background-color: rgb(230, 230, 230);
+.ferramenta-tooltip {
+    background-color: rgba(230, 230, 230);
     border: solid 1px rgba(0,0,0,0.1);
     position: absolute;
     padding: 10px;
     left: 201px;
     width: 300px;
     z-index: 999;
+}
+
+.menu {
+    position: absolute; 
+    left: 0px; 
+    top: 0px; 
+    bottom: 0px; 
+    width: 200px; 
+    background-color: rgba(0,0,0,0.05);
+    border-right: solid 1px rgba(0,0,0,0.2);
+    overflow: auto;
 }

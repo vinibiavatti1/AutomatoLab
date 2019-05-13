@@ -13,68 +13,143 @@
 
 <body>
     <div class="">
-        <div
-            style="position: absolute; left: 0px; top: 0px; bottom: 0px; width: 200px; background-color: rgba(0,0,0,0.05)">
+        <div class="menu">
             <div class="menu-header">
                 <span >AUTOMATA</span>
                 <hr class="mt-0 mb-0">
             </div>
             <div class="menu-item" onclick="" title="Game Of Life B3/S23">
-                <i class="fa fa-paint-brush menu-item-icon"></i> Game Of Life
+                <i class="fab fa-cloudsmith menu-item-icon"></i> Game Of Life
             </div>
-            <div class="menu-header mt-3">
-                <span >FERRAMENTAS</span>
+            <div class="menu-header">
+                <span >Simulação</span>
                 <hr class="mt-0 mb-0">
             </div>
             <div class="menu-item" onclick="selecionarFerramenta(ferramentas.pincel)">
+                <i class="fa fa-play menu-item-icon"></i> Play
+            </div>
+            <div class="menu-item" onclick="selecionarFerramenta(ferramentas.pincel)">
+                <i class="fa fa-pause menu-item-icon"></i> Pausar
+            </div>
+            <div class="menu-item" onclick="selecionarFerramenta(ferramentas.pincel)">
+                <i class="fa fa-stop menu-item-icon"></i> Stop
+            </div>
+            <div class="menu-item" onclick="addVelocidadeSimulacao(1)" onmouseover="mostrarTooltip(event, 'tooltip-aumentar-vel')" onmouseout="ocultarTooltip(event, 'tooltip-aumentar-vel')">
+                <i class="fa fa-angle-double-right menu-item-icon"></i> Aumentar Velocidade
+            </div>
+            <div class="menu-item" onclick="addVelocidadeSimulacao(-1)" onmouseover="mostrarTooltip(event, 'tooltip-diminuir-vel')" onmouseout="ocultarTooltip(event, 'tooltip-diminuir-vel')">
+                <i class="fa fa-angle-double-left menu-item-icon"></i> Diminuir Velocidade
+            </div>
+            <div class="menu-header">
+                <span >Ferramentas</span>
+                <hr class="mt-0 mb-0">
+            </div>
+            <div class="menu-item" onclick="selecionarFerramenta(ferramentas.pincel)" onmouseover="mostrarTooltip(event, 'tooltip-pincel')" onmouseout="ocultarTooltip(event, 'tooltip-pincel')">
                 <i class="fa fa-paint-brush menu-item-icon"></i> Pincel
             </div>
-            <div class="menu-item" onclick="selecionarFerramenta(ferramentas.borracha)">
+            <div class="menu-item" onclick="selecionarFerramenta(ferramentas.borracha)" onmouseover="mostrarTooltip(event, 'tooltip-borracha')" onmouseout="ocultarTooltip(event, 'tooltip-borracha')">
                 <i class="fa fa-eraser menu-item-icon"></i> Borracha
             </div>
-            <div id="tooltip-aumentar-cursor" class="tooltip-aumentar-cursor" style="display: none;" >
-                <b>Aumentar Pincel</b>
-                <hr class="mt-0 mb-1">
-                Aumentar tamanho da área de desenho.<br><br>
-                <img id="tamanho-cursor" src="recursos/tamanhos_cursor/1.png">
-            </div>
-            <div id="aumentar-pincel" class="menu-item" onmouseover="mostrarTooltip('tooltip-aumentar-cursor')" onmouseout="ocultarTooltip('tooltip-aumentar-cursor')" onclick="mudarTamCursor(1)">
+            <div id="aumentar-pincel" class="menu-item" onmouseover="mostrarTooltip(event, 'tooltip-aumentar-cursor')" onmouseout="ocultarTooltip(event, 'tooltip-aumentar-cursor')" onclick="mudarTamCursor(1)">
                 <i class="fa fa-plus menu-item-icon"></i> Aumentar Pincel
             </div>
-            <div id="tooltip-diminuir-cursor" class="tooltip-aumentar-cursor" style="display: none;" >
-                <b>Diminuir Pincel</b>
-                <hr class="mt-0 mb-1">
-                Diminuir tamanho da área de desenho.<br><br>
-                <img id="tamanho-cursor-2" src="recursos/tamanhos_cursor/1.png">
-            </div>
-            <div id="diminuir-pincel" class="menu-item" onmouseover="mostrarTooltip('tooltip-diminuir-cursor')" onmouseout="ocultarTooltip('tooltip-diminuir-cursor')" onclick="mudarTamCursor(-1)">
+            <div id="diminuir-pincel" class="menu-item" onmouseover="mostrarTooltip(event, 'tooltip-diminuir-cursor')" onmouseout="ocultarTooltip(event, 'tooltip-diminuir-cursor')" onclick="mudarTamCursor(-1)">
                 <i class="fa fa-minus menu-item-icon"></i> Diminuir Pincel
             </div>
-            <div class="menu-item" onclick="zoom(1)">
-                <i class="fa fa-search-plus menu-item-icon"></i> Mais Zoom
+            <div class="menu-item" onclick="zoom(1)" onmouseover="mostrarTooltip(event, 'tooltip-zoom-in')" onmouseout="ocultarTooltip(event, 'tooltip-zoom-in')">
+                <i class="fa fa-search-plus menu-item-icon"></i> Aumentar Zoom
             </div>
-            <div class="menu-item" onclick="zoom(-1)">
-                <i class="fa fa-search-minus menu-item-icon"></i> Menos Zoom
+            <div class="menu-item" onclick="zoom(-1)" onmouseover="mostrarTooltip(event, 'tooltip-zoom-out')" onmouseout="ocultarTooltip(event, 'tooltip-zoom-out')">
+                <i class="fa fa-search-minus menu-item-icon"></i> Diminuir Zoom
             </div>
-
+            <div class="menu-header">
+                <span >Tema</span>
+                <hr class="mt-0 mb-0">
+            </div>
+            <div class="menu-item" onclick="mudarTema(temas.dia)" onmouseover="mostrarTooltip(event, 'tooltip-tema-dia')" onmouseout="ocultarTooltip(event, 'tooltip-tema-dia')">
+                <i class="fa fa-sun menu-item-icon"></i> Dia
+            </div>
+            <div class="menu-item" onclick="mudarTema(temas.noite)" onmouseover="mostrarTooltip(event, 'tooltip-tema-noite')" onmouseout="ocultarTooltip(event, 'tooltip-tema-noite')">
+                <i class="fa fa-moon menu-item-icon"></i> Noite
+            </div>
+            <div class="menu-header">
+                <span >Exibir</span>
+                <hr class="mt-0 mb-0">
+            </div>
+            <div class="menu-item" onclick="exibirGrade(true)">
+                <i class="fa fa-th menu-item-icon"></i> Mostrar Grade
+            </div>
+            <div class="menu-item" onclick="exibirGrade(false)">
+                <i class="far fa-square menu-item-icon"></i> Ocultar Grade
+            </div>
         </div>
-        <div style="overflow: scroll; position: absolute; left: 200px; top: 0px; bottom: 0px; right: 0px; background-color: rgba(0,0,0,0.5); border: 1px solid rgba(0,0,0,0.2)">
-            <canvas onmousemove="desenharCursor(event)" onclick="desenharPixel(event)" id="canvas" width="800" height="800" style="cursor: none;"></canvas>
+        <div style="overflow: scroll; position: absolute; left: 200px; top: 0px; bottom: 0px; right: 0px; background-color: rgba(0,0,0,0.5); ">
+            <canvas onmouseout="renderizar()" onmousemove="desenharCursor(event)" onclick="desenharPixel(event)" id="canvas" width="800" height="800" style="cursor: none;"></canvas>
+        </div>
+
+        <!-- Tooltips -->
+        <div id="tooltip-pincel" class="ferramenta-tooltip" style="display: none;" >
+            <b>Pincel</b>
+            <hr class="mt-0 mb-1">
+            Ferramenta para adicionar células em seu autômato.<br><br>
+            <img src="recursos/gifs/g1.gif">
+        </div>
+        <div id="tooltip-borracha" class="ferramenta-tooltip" style="display: none;" >
+            <b>Borracha</b>
+            <hr class="mt-0 mb-1">
+            Ferramenta para remover células de seu autômato.<br><br>
+            <img src="recursos/gifs/g2.gif">
+        </div>
+        <div id="tooltip-aumentar-cursor" class="ferramenta-tooltip" style="display: none;" >
+            <b>Aumentar Pincel</b>
+            <hr class="mt-0 mb-1">
+            Aumentar tamanho da área de desenho.<br><br>
+            <img id="tamanho-cursor" src="recursos/tamanhos_cursor/1.png">
+        </div>
+        <div id="tooltip-diminuir-cursor" class="ferramenta-tooltip" style="display: none;" >
+            <b>Diminuir Pincel</b>
+            <hr class="mt-0 mb-1">
+            Diminuir tamanho da área de desenho.<br><br>
+            <img id="tamanho-cursor-2" src="recursos/tamanhos_cursor/1.png">
+        </div>
+        <div id="tooltip-zoom-in" class="ferramenta-tooltip" style="display: none;" >
+            <b>Aumentar Zoom</b>
+            <hr class="mt-0 mb-1">
+            Aproximar desenho aumentando sua escala.<br><br>
+            <img src="recursos/gifs/g3.gif">
+        </div>
+        <div id="tooltip-zoom-out" class="ferramenta-tooltip" style="display: none;" >
+            <b>Diminuir Zoom</b>
+            <hr class="mt-0 mb-1">
+            Distanciar desenho diminuindo sua escala.<br><br>
+            <img src="recursos/gifs/g4.gif">
+        </div>
+        <div id="tooltip-tema-dia" class="ferramenta-tooltip" style="display: none;" >
+            <b>Dia</b>
+            <hr class="mt-0 mb-1">
+            Clarear área de desenho.<br><br>
+            <img src="recursos/temas/dia.png">
+        </div>
+        <div id="tooltip-tema-noite" class="ferramenta-tooltip" style="display: none;" >
+            <b>Noite</b>
+            <hr class="mt-0 mb-1">
+            Escurecer área de desenho.<br><br>
+            <img src="recursos/temas/noite.png">
+        </div>
+        <div id="tooltip-aumentar-vel" class="ferramenta-tooltip" style="display: none;" >
+            <b>Aumentar Velocidade</b>
+            <hr class="mt-0 mb-1">
+            Aumentar a velocidade de simulação.<br><br>
+            Velocidade atual: <b class="indicador-velocidade">3</b>
+        </div>
+        <div id="tooltip-diminuir-vel" class="ferramenta-tooltip" style="display: none;" >
+            <b>Diminuir Velocidade</b>
+            <hr class="mt-0 mb-1">
+            Diminuir a velocidade de simulação.<br><br>
+            Velocidade atual: <b class="indicador-velocidade">3</b>
         </div>
     </div>
 </body>
 <script src="automato.js"></script>
 <script src="plugins/bootstrap/js/bootstrap.min.js"></script>
-<script>
-    function mostrarTooltip(id) {
-        $("#" + id).show();
-    }
-    function ocultarTooltip(id) {
-        $("#" + id).hide();
-    }
-
-    $(document).ready(function() {
-       
-    });
-</script>
 </html>
