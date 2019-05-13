@@ -1,0 +1,41 @@
+html {
+    font-size: 14px;
+}
+
+.menu-item {
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 5px 10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.menu-header {
+    background-color: rgba(0, 0, 0, 0.0);
+    padding: 10px 10px;
+    user-select: none;
+}
+
+.menu-item:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 5px 10px;
+}
+
+.menu-item:active {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 5px 10px;
+}
+
+.menu-item-icon {
+    margin-right: .5rem !important;
+
+}
+
+.tooltip-aumentar-cursor {
+    background-color: rgb(230, 230, 230);
+    border: solid 1px rgba(0,0,0,0.1);
+    position: absolute;
+    padding: 10px;
+    left: 201px;
+    width: 300px;
+    z-index: 999;
+}

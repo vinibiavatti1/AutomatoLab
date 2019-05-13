@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Canvas</title>
+    <script src="plugins/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" href="estilo.css">
+</head>
+
+<body>
+    <div class="">
+        <div
+            style="position: absolute; left: 0px; top: 0px; bottom: 0px; width: 200px; background-color: rgba(0,0,0,0.05)">
+            <div class="menu-header">
+                <span >AUTOMATA</span>
+                <hr class="mt-0 mb-0">
+            </div>
+            <div class="menu-item" onclick="" title="Game Of Life B3/S23">
+                <i class="fa fa-paint-brush menu-item-icon"></i> Game Of Life
+            </div>
+            <div class="menu-header mt-3">
+                <span >FERRAMENTAS</span>
+                <hr class="mt-0 mb-0">
+            </div>
+            <div class="menu-item" onclick="selecionarFerramenta(ferramentas.pincel)">
+                <i class="fa fa-paint-brush menu-item-icon"></i> Pincel
+            </div>
+            <div class="menu-item" onclick="selecionarFerramenta(ferramentas.borracha)">
+                <i class="fa fa-eraser menu-item-icon"></i> Borracha
+            </div>
+            <div id="tooltip-aumentar-cursor" class="tooltip-aumentar-cursor" style="display: none;" >
+                <b>Aumentar Pincel</b>
+                <hr class="mt-0 mb-1">
+                Aumentar tamanho da área de desenho.<br><br>
+                <img id="tamanho-cursor" src="recursos/tamanhos_cursor/1.png">
+            </div>
+            <div id="aumentar-pincel" class="menu-item" onmouseover="mostrarTooltip('tooltip-aumentar-cursor')" onmouseout="ocultarTooltip('tooltip-aumentar-cursor')" onclick="mudarTamCursor(1)">
+                <i class="fa fa-plus menu-item-icon"></i> Aumentar Pincel
+            </div>
+            <div id="tooltip-diminuir-cursor" class="tooltip-aumentar-cursor" style="display: none;" >
+                <b>Diminuir Pincel</b>
+                <hr class="mt-0 mb-1">
+                Diminuir tamanho da área de desenho.<br><br>
+                <img id="tamanho-cursor-2" src="recursos/tamanhos_cursor/1.png">
+            </div>
+            <div id="diminuir-pincel" class="menu-item" onmouseover="mostrarTooltip('tooltip-diminuir-cursor')" onmouseout="ocultarTooltip('tooltip-diminuir-cursor')" onclick="mudarTamCursor(-1)">
+                <i class="fa fa-minus menu-item-icon"></i> Diminuir Pincel
+            </div>
+            <div class="menu-item" onclick="zoom(1)">
+                <i class="fa fa-search-plus menu-item-icon"></i> Mais Zoom
+            </div>
+            <div class="menu-item" onclick="zoom(-1)">
+                <i class="fa fa-search-minus menu-item-icon"></i> Menos Zoom
+            </div>
+
+        </div>
+        <div style="overflow: scroll; position: absolute; left: 200px; top: 0px; bottom: 0px; right: 0px; background-color: rgba(0,0,0,0.5); border: 1px solid rgba(0,0,0,0.2)">
+            <canvas onmousemove="desenharCursor(event)" onclick="desenharPixel(event)" id="canvas" width="800" height="800" style="cursor: none;"></canvas>
+        </div>
+    </div>
+</body>
+<script src="automato.js"></script>
+<script src="plugins/bootstrap/js/bootstrap.min.js"></script>
+<script>
+    function mostrarTooltip(id) {
+        $("#" + id).show();
+    }
+    function ocultarTooltip(id) {
+        $("#" + id).hide();
+    }
+
+    $(document).ready(function() {
+       
+    });
+</script>
+</html>
