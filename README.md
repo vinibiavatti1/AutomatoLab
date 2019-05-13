@@ -1,5 +1,5 @@
 # Automato Celular
-Simulador de Autômatos Celulares
+Simulador de AutÃ´matos Celulares
 
-### Descriç?o
-Este simulador realiza processos para reproduzir resultados sobre autômatos celulares. Um exemplo conhecido de autômato celular é o "Conway's Game of Life", na qual representa a evoluç?o de organismos sobre um ambiente 2D em processamento.
+### DescriÃ§Ã£o
+Este simulador realiza processos para reproduzir resultados sobre autÃ´matos celulares. Um exemplo conhecido de autÃ´mato celular Ã© o "Conway's Game of Life", na qual representa a evoluÃ§Ã£o de organismos sobre um ambiente 2D em processamento.
