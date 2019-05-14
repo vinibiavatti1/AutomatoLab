@@ -1,3 +1,18 @@
+/**
+ * Listas
+ */
+var automatosBidimensionais = [
+    {
+        id: 1,
+        nome: "Game of Life",
+        cor: "rgb(0,255,0)",
+        regra: {
+            nome: "B3/S23",
+            begin: 3,
+            step: 23
+        }
+    }
+]
 var ferramentas = {
     pincel: 0,
     borracha: 1
@@ -6,14 +21,23 @@ var temas = {
     dia: 0,
     noite: 1
 }
-var pixeis = [];
+var tipoSimulacao = {
+    unidimensional: 0, 
+    bidimensional: 1
+}
+
+/**
+ * Variáveis
+ */
+var mapa = [[]];
+var mapaInicial = mapa;
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 var tamanhoCursor = 1;
 var tamanhoMaxCursor = 5;
-var ferramenta = ferramentas.lapis;
+var ferramenta = ferramentas.pincel;
 var tamanhoBloco = 10;
-var qtdBlocos = 100;
+var qtdBlocos = 50;
 var tamanho = tamanhoBloco * qtdBlocos;
 var corFundo = "white";
 var corGrade = "rgba(0,0,0,0.1)";
@@ -23,20 +47,314 @@ var valorGradeDivisor = 5;
 var corPixel = "rgb(0,200,0)";
 var corCursor = "rgba(0,0,0,0.8)";
 var mostrarGrade = true;
-var velocidadeSimulacao = 5;
+var velocidadeSimulacao = 8;
+var idRegraUnidimensional = 30;
+var regraUnidimensional = obterRegraUnidimensional(idRegraUnidimensional);
+var interval = null;
+var pausado = true;
+var tipo = tipoSimulacao.bidimensional;
+var tipoSelecionado = tipo;
 
 /**
- * Iniciar
+ * Construtor
  */
 $(document).ready(function() {
     ctx.translate(0.5, 0.5);
     ctx.scale(1, 1);
+    criarMapa();
     zoom(0);
     renderizar();
     $(".indicador-velocidade").html(velocidadeSimulacao);
     $("#tamanho-cursor").attr("src", `recursos/tamanhos_cursor/${tamanhoCursor}.png`);
     $("#tamanho-cursor-2").attr("src", `recursos/tamanhos_cursor/${tamanhoCursor}.png`);
+    $("#corIcone").css("color", corPixel);
+    for(var i = 0; i < 256; i++) {
+        $("#seletorRegraUnidimensional").append(`<option value="${i}">Regra ${i}</option>`);
+    }
+    for(var i = 0; i < automatosBidimensionais.length; i++) {
+        var automato = automatosBidimensionais[i];
+        $("#seletorRegraBidimensional").append(`<option value="${automato.id}">${automato.nome + " " + automato.regra.nome}</option>`);
+    }
+    preencherRegraBidimensional();
 });
+
+/**
+ * Mudar tipo de simulação
+ * @param {*} tipo 
+ */
+function mudarTipo(tipoSimulacao) {
+    tipoSelecionado = tipoSimulacao;
+}
+
+/**
+ * Preencher campos de regra bidimensional
+ */
+function preencherRegraBidimensional() {
+    var automatoId = $("#seletorRegraBidimensional").val();
+    var automato = null;
+    for(var i = 0; i < automatosBidimensionais.length; i++) {
+        if(automatosBidimensionais[i].id == automatoId) {
+            automato = automatosBidimensionais[i];
+        }
+    }
+    if(automato == null) {
+        return;
+    }
+    $("#bidimensionalBegin").val(automato.regra.begin);
+    $("#bidimensionalStep").val(automato.regra.step);
+}
+
+/**
+ * Iniciar
+ */
+function iniciar() {
+    pausado = false;
+    if(tipo == tipoSimulacao.unidimensional) {
+        iniciarSimulacaoUnidimensional();
+    } else {
+        iniciarSimulacaoBidimensional();
+    }
+    
+}
+
+/**
+ * Simulação Bidimensional
+ */
+function iniciarSimulacaoBidimensional() {
+    var delay =  (10 - velocidadeSimulacao) * 10;
+    interval = setInterval(function() {
+        if(!pausado) {
+            var mapaAux = copiarMatriz(mapa);
+            for(var i = 0; i < qtdBlocos; i++) {
+                for(var j = 0; j < qtdBlocos; j++) {
+                    var qtd = getQtdVizinhos(i, j);
+                    if(mapa[i][j] == 1) {
+                        if(![2, 3].includes(qtd)) {
+                            mapaAux[i][j] = 0;
+                        }
+                    } else {
+                        if([3].includes(qtd)) {
+                            mapaAux[i][j] = 1;
+                        }
+                    }
+                }
+            }
+            mapa = copiarMatriz(mapaAux);
+            renderizar();
+        }
+    }, delay);
+}
+
+/**
+ * Obter quantidade de vizinhos
+ * @param {*} i 
+ * @param {*} j 
+ */
+function getQtdVizinhos(i, j) {
+    var qtd = 0;
+    
+    x = i -1;
+    y = j -1;
+    if(existePosicao(x, y)) {
+        qtd += mapa[x][y];
+    }
+
+    x = i -1;
+    y = j;
+    if(existePosicao(x, y)) {
+        qtd += mapa[x][y];
+    }
+
+    x = i -1;
+    y = j +1;
+    if(existePosicao(x, y)) {
+        qtd += mapa[x][y];
+    }
+
+    x = i;
+    y = j -1;
+    if(existePosicao(x, y)) {
+        qtd += mapa[x][y];
+    }
+
+    x = i;
+    y = j +1;
+    if(existePosicao(x, y)) {
+        qtd += mapa[x][y];
+    }
+
+    x = i +1;
+    y = j -1;
+    if(existePosicao(x, y)) {
+        qtd += mapa[x][y];
+    }
+
+    x = i +1;
+    y = j;
+    if(existePosicao(x, y)) {
+        qtd += mapa[x][y];
+    }
+
+    x = i +1;
+    y = j +1;
+    if(existePosicao(x, y)) {
+        qtd += mapa[x][y];
+    }
+    return qtd;
+}
+
+/**
+ * Verificar se existe posicao no mapa
+ * @param {*} i 
+ * @param {*} j 
+ */
+function existePosicao(i, j) {
+    return mapa[i] != undefined && mapa[i][j] != undefined;
+}
+
+/**
+ * Simulação Unidimensional
+ */
+function iniciarSimulacaoUnidimensional() {
+    var i = 1;
+    var j = 0;
+    label:
+    for(var ii = 1; ii < qtdBlocos -1; ii++) {
+        for(var jj = 0; jj < qtdBlocos -1; jj++) {
+            if(mapa[ii][jj] == 1) {
+                i = ii;
+                j = jj;
+                break label;
+            }
+        }
+    }
+    var delay =  (10 - velocidadeSimulacao) * 10;
+    interval = setInterval(function() {
+        if(!pausado) {
+            for(var k = 0; k < 10; k++){
+                if(i > qtdBlocos -1) {
+                    clearInterval(interval);
+                    return;
+                } 
+                var p1 = mapa[i - 1][j - 1] ;
+                var p2 = mapa[i - 1][j];
+                var p3 = mapa[i - 1][j + 1];
+                var celula = regraUnidimensional[p1 + "" + p2 + "" + p3];
+                if(celula == 1) {
+                    mapa[i][j] = celula;
+                }
+                j++;
+                if(j > qtdBlocos) {
+                    j = 0;
+                    i++;
+                }
+                renderizar();
+            }
+        }
+    }, delay);
+}
+
+/**
+ * Pausar simulação
+ */
+function pausar() {
+    pausado = !pausado;
+}
+
+/**
+ * Definir autômato
+ */
+function definirAutomato() {
+    tipo = tipoSelecionado;
+    idRegraUnidimensional = $("#seletorRegraUnidimensional").val();
+    regraUnidimensional = obterRegraUnidimensional(idRegraUnidimensional);
+}
+
+/**
+ * Clonar matriz
+ * @param {*} matriz 
+ */
+function copiarMatriz(matriz) {
+    resultado = [[]];
+    for(var i = 0; i < matriz.length; i++) {
+        resultado[i] = [];
+        for(var j = 0; j < matriz.length; j++) {
+            resultado[i][j] = matriz[i][j];
+        }
+    }
+    return resultado;
+}
+
+/**
+ * Resetar com matriz inicial
+ */
+function resetar() {
+    pausado = true;
+    clearInterval(interval);
+    mapa = copiarMatriz(mapaInicial);
+    renderizar();
+}
+
+/**
+ * Abrir input de cor do pixel
+ */
+function inputCorPixel() {
+    $("#corPixelInput").click();
+}
+
+/**
+ * Mudar cor do pixel
+ */
+function mudarCorPixel() {
+    corPixel = $("#corPixelInput").val();
+    $("#corIcone").css("color", corPixel);
+    renderizar();
+}
+
+/**
+ * Criar mapa de celulas
+ */
+function criarMapa() {
+    for(var i = 0; i < qtdBlocos; i++) {
+        mapa[i] = [];
+        for(var j = 0; j < qtdBlocos; j++) {
+            mapa[i][j] = 0;
+        }
+    }
+}
+
+/**
+ * Limpar mapa
+ */
+function limparCelulas() {
+    if(confirm("Você tem certeza que deseja limpar a área de desenho?")) {
+        criarMapa();
+        renderizar();
+    }
+}
+
+/**
+ * Obter regra unidimensional
+ * @param {*} id 
+ */
+function obterRegraUnidimensional(id) {
+    bin = parseInt(id).toString(2);
+    for(var i = bin.length; i < 8; i++) {
+        bin = "0" + bin;
+    }
+    console.log(bin);
+    var regra = {
+        "000": bin[7],
+        "001": bin[6],
+        "010": bin[5],
+        "011": bin[4],
+        "100": bin[3],
+        "101": bin[2],
+        "110": bin[1],
+        "111": bin[0]
+    }
+    return regra;
+}
 
 /**
  * Mostrar grade
@@ -96,19 +414,20 @@ function desenharPixel(event) {
                 "y": (Math.round((y - rect.top) / tamanhoBloco)) + j
             };
             if (ferramenta == ferramentas.borracha) {
-                for(var k = 0; k < pixeis.length; k++) {
+                mapa[obj.y][obj.x] = 0;
+                /*for(var k = 0; k < pixeis.length; k++) {
                     if(pixeis[k].x == obj.x && pixeis[k].y == obj.y) {
                         pixeis.splice(k, 1);
                         break;
                     }
-                }
+                }*/
             } else if(ferramenta == ferramentas.pincel) {
-                pixeis.push(obj);
+                mapa[obj.y][obj.x] = 1;
             }
 
         }
     }
-
+    mapaInicial = copiarMatriz(mapa);
     renderizar();
 }
 
@@ -141,9 +460,16 @@ function desenharCursor(event) {
  */
 function desenharPixeis() {
     ctx.fillStyle = corPixel;
-    for (var i = 0; i < pixeis.length; i++) {
-        ctx.fillRect(pixeis[i].x * tamanhoBloco, pixeis[i].y * tamanhoBloco, tamanhoBloco, tamanhoBloco);
+    for (var i = 0; i < mapa.length; i++) {
+        for (var j = 0; j < mapa.length; j++) {
+            if(mapa[i][j] == 1) {
+                ctx.fillRect(j * tamanhoBloco, i * tamanhoBloco, tamanhoBloco, tamanhoBloco);
+            }
+        }
     }
+    /*for (var i = 0; i < pixeis.length; i++) {
+        ctx.fillRect(pixeis[i].x * tamanhoBloco, pixeis[i].y * tamanhoBloco, tamanhoBloco, tamanhoBloco);
+    }*/
 }
 
 /**

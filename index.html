@@ -12,68 +12,141 @@
 </head>
 
 <body>
+    <!-- Modal -->
+    <div class="modal fade" id="seletorAutomato" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-body">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true" onclick="mudarTipo(tipoSimulacao.bidimensional)">Bidimensional</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" onclick="mudarTipo(tipoSimulacao.unidimensional)" aria-controls="profile" aria-selected="false">Unidimensional</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content pt-2" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            Autômato celular representado em um plano bidimensional que considera todas as células adjacentes para seu desenvolvimento.
+                            <br><br>
+                            <div class="">
+                                <label>Selecionar Pré Definido:</label>
+                                <select id="seletorRegraBidimensional" class="form-control" onchange="preencherRegraBidimensional()"></select>
+                                <br>
+                                <label>Regra de Nascimento (Begin):</label>
+                                <input id="bidimensionalBegin" class="form-control" type="number" disabled>
+                                <br>
+                                <label>Regra de Sobrevivência (Step):</label>
+                                <input id="bidimensionalStep" class="form-control" type="number" disabled>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                            Autômato celular representado em um plano unidimensional na qual considera somente células superiores para seu desenvolvimento.
+                            <br><br>
+                            <div class="">
+                                <label>Selecionar Regra:</label>
+                                <select id="seletorRegraUnidimensional" class="form-control"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-top: none">
+                    <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
+                    <button data-dismiss="modal" type="button" class="btn btn-secondary" onclick="definirAutomato()">Concluir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class="">
         <div class="menu">
             <div class="menu-header">
-                <span >AUTOMATA</span>
+                <span>AUTOMATA</span>
                 <hr class="mt-0 mb-0">
             </div>
-            <div class="menu-item" onclick="" title="Game Of Life B3/S23">
+            <div class="menu-item" onclick="" title="Game Of Life B3/S23" data-toggle="modal"
+                data-target="#seletorAutomato">
                 <i class="fab fa-cloudsmith menu-item-icon"></i> Game Of Life
             </div>
             <div class="menu-header">
-                <span >Simulação</span>
+                <span>Simulação</span>
                 <hr class="mt-0 mb-0">
             </div>
-            <div class="menu-item" onclick="selecionarFerramenta(ferramentas.pincel)">
-                <i class="fa fa-play menu-item-icon"></i> Play
+            <div class="menu-item" onclick="iniciar()">
+                <i class="fa fa-play menu-item-icon"></i> Iniciar
             </div>
-            <div class="menu-item" onclick="selecionarFerramenta(ferramentas.pincel)">
+            <div class="menu-item" onclick="pausar()">
                 <i class="fa fa-pause menu-item-icon"></i> Pausar
             </div>
-            <div class="menu-item" onclick="selecionarFerramenta(ferramentas.pincel)">
-                <i class="fa fa-stop menu-item-icon"></i> Stop
+            <div class="menu-item" onclick="resetar()">
+                <i class="fa fa-stop menu-item-icon"></i> Resetar
             </div>
-            <div class="menu-item" onclick="addVelocidadeSimulacao(1)" onmouseover="mostrarTooltip(event, 'tooltip-aumentar-vel')" onmouseout="ocultarTooltip(event, 'tooltip-aumentar-vel')">
+            <div class="menu-item" onclick="addVelocidadeSimulacao(1)"
+                onmouseover="mostrarTooltip(event, 'tooltip-aumentar-vel')"
+                onmouseout="ocultarTooltip(event, 'tooltip-aumentar-vel')">
                 <i class="fa fa-angle-double-right menu-item-icon"></i> Aumentar Velocidade
             </div>
-            <div class="menu-item" onclick="addVelocidadeSimulacao(-1)" onmouseover="mostrarTooltip(event, 'tooltip-diminuir-vel')" onmouseout="ocultarTooltip(event, 'tooltip-diminuir-vel')">
+            <div class="menu-item" onclick="addVelocidadeSimulacao(-1)"
+                onmouseover="mostrarTooltip(event, 'tooltip-diminuir-vel')"
+                onmouseout="ocultarTooltip(event, 'tooltip-diminuir-vel')">
                 <i class="fa fa-angle-double-left menu-item-icon"></i> Diminuir Velocidade
             </div>
             <div class="menu-header">
-                <span >Ferramentas</span>
+                <span>Ferramentas</span>
                 <hr class="mt-0 mb-0">
             </div>
-            <div class="menu-item" onclick="selecionarFerramenta(ferramentas.pincel)" onmouseover="mostrarTooltip(event, 'tooltip-pincel')" onmouseout="ocultarTooltip(event, 'tooltip-pincel')">
+            <div class="menu-item" onclick="selecionarFerramenta(ferramentas.pincel)"
+                onmouseover="mostrarTooltip(event, 'tooltip-pincel')"
+                onmouseout="ocultarTooltip(event, 'tooltip-pincel')">
                 <i class="fa fa-paint-brush menu-item-icon"></i> Pincel
             </div>
-            <div class="menu-item" onclick="selecionarFerramenta(ferramentas.borracha)" onmouseover="mostrarTooltip(event, 'tooltip-borracha')" onmouseout="ocultarTooltip(event, 'tooltip-borracha')">
+            <div class="menu-item" onclick="selecionarFerramenta(ferramentas.borracha)"
+                onmouseover="mostrarTooltip(event, 'tooltip-borracha')"
+                onmouseout="ocultarTooltip(event, 'tooltip-borracha')">
                 <i class="fa fa-eraser menu-item-icon"></i> Borracha
             </div>
-            <div id="aumentar-pincel" class="menu-item" onmouseover="mostrarTooltip(event, 'tooltip-aumentar-cursor')" onmouseout="ocultarTooltip(event, 'tooltip-aumentar-cursor')" onclick="mudarTamCursor(1)">
+            <div id="aumentar-pincel" class="menu-item" onmouseover="mostrarTooltip(event, 'tooltip-aumentar-cursor')"
+                onmouseout="ocultarTooltip(event, 'tooltip-aumentar-cursor')" onclick="mudarTamCursor(1)">
                 <i class="fa fa-plus menu-item-icon"></i> Aumentar Pincel
             </div>
-            <div id="diminuir-pincel" class="menu-item" onmouseover="mostrarTooltip(event, 'tooltip-diminuir-cursor')" onmouseout="ocultarTooltip(event, 'tooltip-diminuir-cursor')" onclick="mudarTamCursor(-1)">
+            <div id="diminuir-pincel" class="menu-item" onmouseover="mostrarTooltip(event, 'tooltip-diminuir-cursor')"
+                onmouseout="ocultarTooltip(event, 'tooltip-diminuir-cursor')" onclick="mudarTamCursor(-1)">
                 <i class="fa fa-minus menu-item-icon"></i> Diminuir Pincel
             </div>
-            <div class="menu-item" onclick="zoom(1)" onmouseover="mostrarTooltip(event, 'tooltip-zoom-in')" onmouseout="ocultarTooltip(event, 'tooltip-zoom-in')">
+            <div class="menu-item" onclick="zoom(1)" onmouseover="mostrarTooltip(event, 'tooltip-zoom-in')"
+                onmouseout="ocultarTooltip(event, 'tooltip-zoom-in')">
                 <i class="fa fa-search-plus menu-item-icon"></i> Aumentar Zoom
             </div>
-            <div class="menu-item" onclick="zoom(-1)" onmouseover="mostrarTooltip(event, 'tooltip-zoom-out')" onmouseout="ocultarTooltip(event, 'tooltip-zoom-out')">
+            <div class="menu-item" onclick="zoom(-1)" onmouseover="mostrarTooltip(event, 'tooltip-zoom-out')"
+                onmouseout="ocultarTooltip(event, 'tooltip-zoom-out')">
                 <i class="fa fa-search-minus menu-item-icon"></i> Diminuir Zoom
             </div>
+            <div class="menu-item" onclick="limparCelulas()">
+                <i class="fa fa-trash-alt menu-item-icon"></i> Limpar
+            </div>
             <div class="menu-header">
-                <span >Tema</span>
+                <span>Tema</span>
                 <hr class="mt-0 mb-0">
             </div>
-            <div class="menu-item" onclick="mudarTema(temas.dia)" onmouseover="mostrarTooltip(event, 'tooltip-tema-dia')" onmouseout="ocultarTooltip(event, 'tooltip-tema-dia')">
+            <input id="corPixelInput" type="color" style="display: none;" onchange="mudarCorPixel()">
+            <div class="menu-item" onclick="inputCorPixel()">
+                <i id="corIcone" class="fa fa-tint menu-item-icon"></i> Cor da Célula
+            </div>
+            <div class="menu-item" onclick="mudarTema(temas.dia)"
+                onmouseover="mostrarTooltip(event, 'tooltip-tema-dia')"
+                onmouseout="ocultarTooltip(event, 'tooltip-tema-dia')">
                 <i class="fa fa-sun menu-item-icon"></i> Dia
             </div>
-            <div class="menu-item" onclick="mudarTema(temas.noite)" onmouseover="mostrarTooltip(event, 'tooltip-tema-noite')" onmouseout="ocultarTooltip(event, 'tooltip-tema-noite')">
+            <div class="menu-item" onclick="mudarTema(temas.noite)"
+                onmouseover="mostrarTooltip(event, 'tooltip-tema-noite')"
+                onmouseout="ocultarTooltip(event, 'tooltip-tema-noite')">
                 <i class="fa fa-moon menu-item-icon"></i> Noite
             </div>
             <div class="menu-header">
-                <span >Exibir</span>
+                <span>Exibir</span>
                 <hr class="mt-0 mb-0">
             </div>
             <div class="menu-item" onclick="exibirGrade(true)">
@@ -83,66 +156,68 @@
                 <i class="far fa-square menu-item-icon"></i> Ocultar Grade
             </div>
         </div>
-        <div style="overflow: scroll; position: absolute; left: 200px; top: 0px; bottom: 0px; right: 0px; background-color: rgba(0,0,0,0.5); ">
-            <canvas onmouseout="renderizar()" onmousemove="desenharCursor(event)" onclick="desenharPixel(event)" id="canvas" width="800" height="800" style="cursor: none;"></canvas>
+        <div
+            style="overflow: scroll; position: absolute; left: 200px; top: 0px; bottom: 0px; right: 0px; background-color: rgba(0,0,0,0.5); ">
+            <canvas onmouseout="renderizar()" onmousemove="desenharCursor(event)" onclick="desenharPixel(event)"
+                id="canvas" width="800" height="800" style="cursor: none;"></canvas>
         </div>
 
         <!-- Tooltips -->
-        <div id="tooltip-pincel" class="ferramenta-tooltip" style="display: none;" >
+        <div id="tooltip-pincel" class="ferramenta-tooltip" style="display: none;">
             <b>Pincel</b>
             <hr class="mt-0 mb-1">
             Ferramenta para adicionar células em seu autômato.<br><br>
             <img src="recursos/gifs/g1.gif">
         </div>
-        <div id="tooltip-borracha" class="ferramenta-tooltip" style="display: none;" >
+        <div id="tooltip-borracha" class="ferramenta-tooltip" style="display: none;">
             <b>Borracha</b>
             <hr class="mt-0 mb-1">
             Ferramenta para remover células de seu autômato.<br><br>
             <img src="recursos/gifs/g2.gif">
         </div>
-        <div id="tooltip-aumentar-cursor" class="ferramenta-tooltip" style="display: none;" >
+        <div id="tooltip-aumentar-cursor" class="ferramenta-tooltip" style="display: none;">
             <b>Aumentar Pincel</b>
             <hr class="mt-0 mb-1">
             Aumentar tamanho da área de desenho.<br><br>
             <img id="tamanho-cursor" src="recursos/tamanhos_cursor/1.png">
         </div>
-        <div id="tooltip-diminuir-cursor" class="ferramenta-tooltip" style="display: none;" >
+        <div id="tooltip-diminuir-cursor" class="ferramenta-tooltip" style="display: none;">
             <b>Diminuir Pincel</b>
             <hr class="mt-0 mb-1">
             Diminuir tamanho da área de desenho.<br><br>
             <img id="tamanho-cursor-2" src="recursos/tamanhos_cursor/1.png">
         </div>
-        <div id="tooltip-zoom-in" class="ferramenta-tooltip" style="display: none;" >
+        <div id="tooltip-zoom-in" class="ferramenta-tooltip" style="display: none;">
             <b>Aumentar Zoom</b>
             <hr class="mt-0 mb-1">
             Aproximar desenho aumentando sua escala.<br><br>
             <img src="recursos/gifs/g3.gif">
         </div>
-        <div id="tooltip-zoom-out" class="ferramenta-tooltip" style="display: none;" >
+        <div id="tooltip-zoom-out" class="ferramenta-tooltip" style="display: none;">
             <b>Diminuir Zoom</b>
             <hr class="mt-0 mb-1">
             Distanciar desenho diminuindo sua escala.<br><br>
             <img src="recursos/gifs/g4.gif">
         </div>
-        <div id="tooltip-tema-dia" class="ferramenta-tooltip" style="display: none;" >
+        <div id="tooltip-tema-dia" class="ferramenta-tooltip" style="display: none;">
             <b>Dia</b>
             <hr class="mt-0 mb-1">
             Clarear área de desenho.<br><br>
             <img src="recursos/temas/dia.png">
         </div>
-        <div id="tooltip-tema-noite" class="ferramenta-tooltip" style="display: none;" >
+        <div id="tooltip-tema-noite" class="ferramenta-tooltip" style="display: none;">
             <b>Noite</b>
             <hr class="mt-0 mb-1">
             Escurecer área de desenho.<br><br>
             <img src="recursos/temas/noite.png">
         </div>
-        <div id="tooltip-aumentar-vel" class="ferramenta-tooltip" style="display: none;" >
+        <div id="tooltip-aumentar-vel" class="ferramenta-tooltip" style="display: none;">
             <b>Aumentar Velocidade</b>
             <hr class="mt-0 mb-1">
             Aumentar a velocidade de simulação.<br><br>
             Velocidade atual: <b class="indicador-velocidade">3</b>
         </div>
-        <div id="tooltip-diminuir-vel" class="ferramenta-tooltip" style="display: none;" >
+        <div id="tooltip-diminuir-vel" class="ferramenta-tooltip" style="display: none;">
             <b>Diminuir Velocidade</b>
             <hr class="mt-0 mb-1">
             Diminuir a velocidade de simulação.<br><br>
@@ -152,4 +227,5 @@
 </body>
 <script src="automato.js"></script>
 <script src="plugins/bootstrap/js/bootstrap.min.js"></script>
+
 </html>
