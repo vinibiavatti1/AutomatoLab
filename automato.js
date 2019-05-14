@@ -5,11 +5,21 @@ var automatosBidimensionais = [
     {
         id: 1,
         nome: "Game of Life",
-        cor: "rgb(0,255,0)",
+        cor: "rgb(0,230,0)",
         regra: {
             nome: "B3/S23",
-            begin: 3,
-            step: 23
+            begin: [3],
+            step: [2,3]
+        }
+    },
+    {
+        id: 2,
+        nome: "High Life",
+        cor: "rgb(230,0,0)",
+        regra: {
+            nome: "B36/S23",
+            begin: [3, 6],
+            step: [2,3]
         }
     }
 ]
@@ -47,13 +57,14 @@ var valorGradeDivisor = 5;
 var corPixel = "rgb(0,200,0)";
 var corCursor = "rgba(0,0,0,0.8)";
 var mostrarGrade = true;
-var velocidadeSimulacao = 8;
+var velocidadeSimulacao = 10;
 var idRegraUnidimensional = 30;
 var regraUnidimensional = obterRegraUnidimensional(idRegraUnidimensional);
 var interval = null;
 var pausado = true;
 var tipo = tipoSimulacao.bidimensional;
 var tipoSelecionado = tipo;
+var automato = automatosBidimensionais[0];
 
 /**
  * Construtor
@@ -68,6 +79,7 @@ $(document).ready(function() {
     $("#tamanho-cursor").attr("src", `recursos/tamanhos_cursor/${tamanhoCursor}.png`);
     $("#tamanho-cursor-2").attr("src", `recursos/tamanhos_cursor/${tamanhoCursor}.png`);
     $("#corIcone").css("color", corPixel);
+    mudarIconesIniciar();
     for(var i = 0; i < 256; i++) {
         $("#seletorRegraUnidimensional").append(`<option value="${i}">Regra ${i}</option>`);
     }
@@ -100,28 +112,52 @@ function preencherRegraBidimensional() {
     if(automato == null) {
         return;
     }
-    $("#bidimensionalBegin").val(automato.regra.begin);
-    $("#bidimensionalStep").val(automato.regra.step);
+    $("#bidimensionalBegin").val(automato.regra.begin.join(""));
+    $("#bidimensionalStep").val(automato.regra.step.join(""));
+}
+
+/**
+ * Muda icones do botao iniciar
+ */
+function mudarIconesIniciar() {
+    if(pausado) {
+        $("#botaoIniciar").removeClass("botao-iniciar-vermelho");
+        $("#botaoIniciar").addClass("botao-iniciar-verde");
+        $("#iconeIniciar").addClass("fa-play");
+        $("#iconeIniciar").removeClass("fa-pause");
+        $("#textoIniciar").html("Iniciar");
+        $("#estadoSimulacao").html("Pausada");
+        $("#estadoSimulacao").css("color", "rgba(210,0,0,1)");
+    } else {
+        $("#botaoIniciar").removeClass("botao-iniciar-verde");
+        $("#botaoIniciar").addClass("botao-iniciar-vermelho");
+        $("#iconeIniciar").removeClass("fa-play");
+        $("#iconeIniciar").addClass("fa-pause");
+        $("#textoIniciar").html("Pausar");
+        $("#estadoSimulacao").html("Em Execução");
+        $("#estadoSimulacao").css("color", "rgba(0,180,0,1)");
+    }
 }
 
 /**
  * Iniciar
  */
 function iniciar() {
-    pausado = false;
+    pausado = !pausado;
+    mudarIconesIniciar();
     if(tipo == tipoSimulacao.unidimensional) {
         iniciarSimulacaoUnidimensional();
     } else {
         iniciarSimulacaoBidimensional();
     }
-    
+    $("#botaoIniciar").addClass("botao-iniciar-clicado");
 }
 
 /**
  * Simulação Bidimensional
  */
 function iniciarSimulacaoBidimensional() {
-    var delay =  (10 - velocidadeSimulacao) * 10;
+    var delay =  (10 - velocidadeSimulacao) * 100;
     interval = setInterval(function() {
         if(!pausado) {
             var mapaAux = copiarMatriz(mapa);
@@ -129,11 +165,11 @@ function iniciarSimulacaoBidimensional() {
                 for(var j = 0; j < qtdBlocos; j++) {
                     var qtd = getQtdVizinhos(i, j);
                     if(mapa[i][j] == 1) {
-                        if(![2, 3].includes(qtd)) {
+                        if(!automato.regra.step.includes(qtd)) {
                             mapaAux[i][j] = 0;
                         }
                     } else {
-                        if([3].includes(qtd)) {
+                        if(automato.regra.begin.includes(qtd)) {
                             mapaAux[i][j] = 1;
                         }
                     }
@@ -255,19 +291,27 @@ function iniciarSimulacaoUnidimensional() {
 }
 
 /**
- * Pausar simulação
- */
-function pausar() {
-    pausado = !pausado;
-}
-
-/**
  * Definir autômato
  */
 function definirAutomato() {
+    pausado = true;
+    mudarIconesIniciar();
     tipo = tipoSelecionado;
     idRegraUnidimensional = $("#seletorRegraUnidimensional").val();
     regraUnidimensional = obterRegraUnidimensional(idRegraUnidimensional);
+    var automatoId = $("#seletorRegraBidimensional").val();
+    for(var i = 0; i < automatosBidimensionais.length; i++) {
+        if(automatosBidimensionais[i].id == automatoId) {
+            automato = automatosBidimensionais[i];
+        }
+    }
+    $("#corPixelInput").val(automato.cor);
+    $("#corIcone").css("color", automato.cor);
+    $("#nomeAutomato").html(automato.nome);
+    $("#botaoAutomato").attr("title", automato.nome + " " + automato.regra.nome);
+    corPixel = automato.cor;
+    criarMapa();
+    renderizar();
 }
 
 /**
@@ -290,6 +334,7 @@ function copiarMatriz(matriz) {
  */
 function resetar() {
     pausado = true;
+    mudarIconesIniciar();
     clearInterval(interval);
     mapa = copiarMatriz(mapaInicial);
     renderizar();

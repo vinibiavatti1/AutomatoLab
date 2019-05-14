@@ -67,29 +67,27 @@
                 <span>AUTOMATA</span>
                 <hr class="mt-0 mb-0">
             </div>
-            <div class="menu-item" onclick="" title="Game Of Life B3/S23" data-toggle="modal"
+            <div id="botaoAutomato" class="menu-item" onclick="" title="Game Of Life B3/S23" data-toggle="modal"
                 data-target="#seletorAutomato">
-                <i class="fab fa-cloudsmith menu-item-icon"></i> Game Of Life
+                <i class="fab fa-cloudsmith menu-item-icon"></i> <span id="nomeAutomato">Game Of Life</span>
             </div>
             <div class="menu-header">
                 <span>Simulação</span>
                 <hr class="mt-0 mb-0">
             </div>
-            <div class="menu-item" onclick="iniciar()">
-                <i class="fa fa-play menu-item-icon"></i> Iniciar
+            <div id="botaoIniciar" class="menu-item" onclick="iniciar()">
+                <i id="iconeIniciar" class="fa fa-play menu-item-icon"></i> <span id="textoIniciar">Iniciar</span>
             </div>
-            <div class="menu-item" onclick="pausar()">
-                <i class="fa fa-pause menu-item-icon"></i> Pausar
-            </div>
-            <div class="menu-item" onclick="resetar()">
+            <div id="botaoResetar" class="menu-item" onclick="resetar()" onmouseover="mostrarTooltip(event, 'tooltip-resetar')"
+            onmouseout="ocultarTooltip(event, 'tooltip-resetar')">
                 <i class="fa fa-stop menu-item-icon"></i> Resetar
             </div>
-            <div class="menu-item" onclick="addVelocidadeSimulacao(1)"
+            <div id="botaoAumentarVelocidade" class="menu-item" onclick="addVelocidadeSimulacao(1)"
                 onmouseover="mostrarTooltip(event, 'tooltip-aumentar-vel')"
                 onmouseout="ocultarTooltip(event, 'tooltip-aumentar-vel')">
                 <i class="fa fa-angle-double-right menu-item-icon"></i> Aumentar Velocidade
             </div>
-            <div class="menu-item" onclick="addVelocidadeSimulacao(-1)"
+            <div id="botaoDiminuirVelocidade" class="menu-item" onclick="addVelocidadeSimulacao(-1)"
                 onmouseover="mostrarTooltip(event, 'tooltip-diminuir-vel')"
                 onmouseout="ocultarTooltip(event, 'tooltip-diminuir-vel')">
                 <i class="fa fa-angle-double-left menu-item-icon"></i> Diminuir Velocidade
@@ -124,7 +122,8 @@
                 onmouseout="ocultarTooltip(event, 'tooltip-zoom-out')">
                 <i class="fa fa-search-minus menu-item-icon"></i> Diminuir Zoom
             </div>
-            <div class="menu-item" onclick="limparCelulas()">
+            <div class="menu-item" onclick="limparCelulas()" onmouseover="mostrarTooltip(event, 'tooltip-limpar')"
+            onmouseout="ocultarTooltip(event, 'tooltip-limpar')">
                 <i class="fa fa-trash-alt menu-item-icon"></i> Limpar
             </div>
             <div class="menu-header">
@@ -222,6 +221,19 @@
             <hr class="mt-0 mb-1">
             Diminuir a velocidade de simulação.<br><br>
             Velocidade atual: <b class="indicador-velocidade">3</b>
+        </div>
+        <div id="tooltip-resetar" class="ferramenta-tooltip" style="display: none;">
+            <b>Resetar</b>
+            <hr class="mt-0 mb-1">
+            Voltar o autômato para o estado inicial.<br><br>
+            Estado da simulação: <b id="estadoSimulacao">Pausada</b>
+        </div>
+        <div id="tooltip-limpar" class="ferramenta-tooltip" style="display: none;">
+            <b>Limpar</b>
+            <hr class="mt-0 mb-1">
+            Remove todas as células da área de desenho.<br>
+            <span style="color: rgba(0,0,0,0.7); font-size: 10px;">Exige confirmação.</span><br><br>
+            <img src="recursos/gifs/g5.gif">
         </div>
     </div>
 </body>
