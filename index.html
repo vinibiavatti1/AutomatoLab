@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Canvas</title>
+    <title>Automato Celular</title>
     <script src="plugins/jquery/jquery.min.js"></script>
     <link rel="stylesheet" href="plugins/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
@@ -13,7 +13,7 @@
 
 <body>
     <!-- Modal -->
-    <div class="modal fade" id="seletorAutomato" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="modal fade" id="seletorAutomato" tabindex="-1" role="dialog" aria-labelledby="Automato Celular"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -21,14 +21,17 @@
                 <div class="modal-body">
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true" onclick="mudarTipo(tipoSimulacao.bidimensional)">Bidimensional</a>
+                            <a class="nav-link active" id="bidimensional-tab" data-toggle="tab" href="#bidimensional" role="tab" aria-controls="home" aria-selected="true" onclick="mudarTipo(tipoSimulacao.bidimensional)">Bidimensional</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" onclick="mudarTipo(tipoSimulacao.unidimensional)" aria-controls="profile" aria-selected="false">Unidimensional</a>
+                            <a class="nav-link" id="unidimensional-tab" data-toggle="tab" href="#unidimensional" role="tab" onclick="mudarTipo(tipoSimulacao.unidimensional)" aria-controls="profile" aria-selected="false">Unidimensional</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="wireworld-tab" data-toggle="tab" href="#wireworld" role="tab" onclick="mudarTipo(tipoSimulacao.wireworld)" aria-controls="profile" aria-selected="false">Wireworld</a>
                         </li>
                     </ul>
                     <div class="tab-content pt-2" id="myTabContent">
-                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="tab-pane fade show active" id="bidimensional" role="tabpanel" aria-labelledby="home-tab">
                             Autômato celular representado em um plano bidimensional que considera todas as células adjacentes para seu desenvolvimento.
                             <br><br>
                             <div class="">
@@ -42,7 +45,7 @@
                                 <input id="bidimensionalStep" class="form-control" type="number" disabled>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <div class="tab-pane fade" id="unidimensional" role="tabpanel" aria-labelledby="profile-tab">
                             Autômato celular representado em um plano unidimensional na qual considera somente células superiores para seu desenvolvimento.
                             <br><br>
                             <div class="">
@@ -50,6 +53,15 @@
                                 <select id="seletorRegraUnidimensional" class="form-control"></select>
                             </div>
                         </div>
+                        <div class="tab-pane fade" id="wireworld" role="tabpanel" aria-labelledby="profile-tab">
+                            Autômato celular com conceitos de eletrônica digital para simulação de portas lógicas e resultados binários.
+                        </div>
+                    </div>
+                    <div>
+                        <br>
+                        <label>Quantidade de Quadros</label>
+                        <select id="qtdQuadros" class="form-control"></select>
+                        <span class="mini-info">A simulação pode ficar lenta quando selecionado muitos quadros</span>
                     </div>
                 </div>
                 <div class="modal-footer" style="border-top: none">
@@ -60,11 +72,11 @@
         </div>
     </div>
 
-
+    <!-- Menu -->
     <div class="">
         <div class="menu">
             <div class="menu-header">
-                <span>AUTOMATA</span>
+                <span>Automato Celular</span>
                 <hr class="mt-0 mb-0">
             </div>
             <div id="botaoAutomato" class="menu-item" onclick="" title="Game Of Life B3/S23" data-toggle="modal"
@@ -96,12 +108,22 @@
                 <span>Ferramentas</span>
                 <hr class="mt-0 mb-0">
             </div>
-            <div class="menu-item" onclick="selecionarFerramenta(ferramentas.pincel)"
+            <div id="botaoPincel" class="menu-item" onclick="selecionarFerramenta(ferramentas.pincel)"
                 onmouseover="mostrarTooltip(event, 'tooltip-pincel')"
                 onmouseout="ocultarTooltip(event, 'tooltip-pincel')">
                 <i class="fa fa-paint-brush menu-item-icon"></i> Pincel
             </div>
-            <div class="menu-item" onclick="selecionarFerramenta(ferramentas.borracha)"
+            <div id="botaoFio" class="menu-item" onclick="selecionarFerramenta(ferramentas.fio)"
+                onmouseover="mostrarTooltip(event, 'tooltip-fio')"
+                onmouseout="ocultarTooltip(event, 'tooltip-fio')">
+                <i class="fa fa-plug menu-item-icon"></i> Fio
+            </div>
+            <div id="botaoEnergia" class="menu-item" onclick="selecionarFerramenta(ferramentas.energia)"
+                onmouseover="mostrarTooltip(event, 'tooltip-energia')"
+                onmouseout="ocultarTooltip(event, 'tooltip-energia')">
+                <i class="fa fa-bolt menu-item-icon"></i> Energia
+            </div>
+            <div id="botaoBorracha" class="menu-item" onclick="selecionarFerramenta(ferramentas.borracha)"
                 onmouseover="mostrarTooltip(event, 'tooltip-borracha')"
                 onmouseout="ocultarTooltip(event, 'tooltip-borracha')">
                 <i class="fa fa-eraser menu-item-icon"></i> Borracha
@@ -130,9 +152,21 @@
                 <span>Tema</span>
                 <hr class="mt-0 mb-0">
             </div>
-            <input id="corPixelInput" type="color" style="display: none;" onchange="mudarCorPixel()">
-            <div class="menu-item" onclick="inputCorPixel()">
+            <input id="corCelulaInput" type="color" style="display: none;" onchange="mudarCorCelula()">
+            <div id="botaoCorCelula" class="menu-item" onclick="inputCorCelula()">
                 <i id="corIcone" class="fa fa-tint menu-item-icon"></i> Cor da Célula
+            </div>
+            <input id="corFioInput" type="color" style="display: none;" onchange="mudarCorFio()">
+            <div id="botaoCorFio" class="menu-item" onclick="inputCorFio()">
+                <i id="corIconeFio" class="fa fa-tint menu-item-icon"></i> Cor do Fio
+            </div>
+            <input id="corCabecaInput" type="color" style="display: none;" onchange="mudarCorCabeca()">
+            <div id="botaoCorCabeca" class="menu-item" onclick="inputCorCabeca()">
+                <i id="corIconeCabeca" class="fa fa-tint menu-item-icon"></i> Cor da Cabeça
+            </div>
+            <input id="corCaldaInput" type="color" style="display: none;" onchange="mudarCorCalda()">
+            <div id="botaoCorCalda" class="menu-item" onclick="inputCorCalda()">
+                <i id="corIconeCalda" class="fa fa-tint menu-item-icon"></i> Cor da Calda
             </div>
             <div class="menu-item" onclick="mudarTema(temas.dia)"
                 onmouseover="mostrarTooltip(event, 'tooltip-tema-dia')"
@@ -232,8 +266,20 @@
             <b>Limpar</b>
             <hr class="mt-0 mb-1">
             Remove todas as células da área de desenho.<br>
-            <span style="color: rgba(0,0,0,0.7); font-size: 10px;">Exige confirmação.</span><br><br>
+            <span class="mini-info">Exige confirmação.</span><br><br>
             <img src="recursos/gifs/g5.gif">
+        </div>
+        <div id="tooltip-fio" class="ferramenta-tooltip" style="display: none;">
+            <b>Fio (Wireworld)</b>
+            <hr class="mt-0 mb-1">
+            Criar condutor de energia.<br><br>
+            <img src="recursos/gifs/g6.gif">
+        </div>
+        <div id="tooltip-energia" class="ferramenta-tooltip" style="display: none;">
+            <b>Energia (Wireworld)</b>
+            <hr class="mt-0 mb-1">
+            Atribuir energia em um fio condutor.<br><br>
+            <img src="recursos/gifs/g7.gif">
         </div>
     </div>
 </body>
