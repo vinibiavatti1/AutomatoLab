@@ -119,7 +119,7 @@ function definirAutomato() {
         $("#corIcone").css("color", corCelula);
         $("#nomeAutomato").html("Unidimensional / Regra " + idRegraUnidimensional);
         $("#botaoAutomato").attr("Unidimensional / Regra " + idRegraUnidimensional);
-        ferramenta = ferramentas.pincel;
+        selecionarFerramenta(ferramentas.pincel);
     } else if(tipo == tipoSimulacao.bidimensional) {
         var automatoId = $("#seletorRegraBidimensional").val();
         for(var i = 0; i < automatosBidimensionais.length; i++) {
@@ -132,7 +132,7 @@ function definirAutomato() {
         $("#corIcone").css("color", corCelula);
         $("#nomeAutomato").html(automato.nome);
         $("#botaoAutomato").attr("title", automato.nome + " " + automato.regra.nome);
-        ferramenta = ferramentas.pincel;
+        selecionarFerramenta(ferramentas.pincel);
     } else if(tipo == tipoSimulacao.wireworld) {
         $("#corCelulaInput").val(corCelula);
         $("#corIcone").css("color", corCelula);
@@ -144,7 +144,7 @@ function definirAutomato() {
         $("#corIconeCabeca").css("color", corCabeca);
         $("#corCaldaInput").val(corCalda);
         $("#corIconeCalda").css("color", corCalda);
-        ferramenta = ferramentas.fio;
+        selecionarFerramenta(ferramentas.fio);
     }
     mudarBotoes();
     criarMapa();
@@ -588,6 +588,26 @@ function addVelocidadeSimulacao(add) {
  */
 function selecionarFerramenta(selferramenta) {
     ferramenta = selferramenta;
+    pintarFerramentaSelecionada();
+}
+
+/**
+ * Pintar botao referente a ferramenta selecionada
+ */
+function pintarFerramentaSelecionada() {
+    $("#botaoPincel").removeClass("ferramenta-selecionada");
+    $("#botaoFio").removeClass("ferramenta-selecionada");
+    $("#botaoEnergia").removeClass("ferramenta-selecionada");
+    $("#botaoBorracha").removeClass("ferramenta-selecionada");
+    if(ferramenta == ferramentas.pincel) {
+        $("#botaoPincel").addClass("ferramenta-selecionada");
+    } else if(ferramenta == ferramentas.borracha) {
+        $("#botaoBorracha").addClass("ferramenta-selecionada");
+    } else if(ferramenta == ferramentas.fio) {
+        $("#botaoFio").addClass("ferramenta-selecionada");
+    } else if(ferramenta == ferramentas.energia) {
+        $("#botaoEnergia").addClass("ferramenta-selecionada");
+    }
 }
 
 /**
