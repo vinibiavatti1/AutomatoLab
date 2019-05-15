@@ -28,7 +28,6 @@ body {
 
 .menu-titulo {
     padding: 10px 10px;
-    user-select: none;
     letter-spacing: 3px;
 }
 
@@ -103,4 +102,11 @@ body {
     left: 5px;
     font-size: 10px;
     color: rgba(0,0,0,0.7);
+}
+
+h1, h2, h3 {
+    font-size: 13px;
+    font-weight: normal;
+    padding: none;
+    margin: none;
 }

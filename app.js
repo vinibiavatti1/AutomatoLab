@@ -8,8 +8,8 @@ var automatosBidimensionais = [
         cor: "rgb(0,230,0)",
         regra: {
             nome: "B3/S23",
-            begin: [3],
-            step: [2,3]
+            born: [3],
+            survive: [2, 3]
         }
     },
     {
@@ -18,8 +18,178 @@ var automatosBidimensionais = [
         cor: "rgb(230,0,0)",
         regra: {
             nome: "B36/S23",
-            begin: [3, 6],
-            step: [2,3]
+            born: [3, 6],
+            survive: [2, 3]
+        }
+    },
+    {
+        id: 3,
+        nome: "Assimilation",
+        cor: "rgb(0,0,230)",
+        regra: {
+            nome: "B345/S4567",
+            born: [3, 4, 5],
+            survive: [4, 5, 6, 7]
+        }
+    },
+    {
+        id: 4,
+        nome: "2X2",
+        cor: "rgb(230,230,0)",
+        regra: {
+            nome: "B36/S125",
+            born: [3, 6],
+            survive: [1, 2, 5]
+        }
+    },
+    {
+        id: 5,
+        nome: "Day and Night",
+        cor: "rgb(0,230,230)",
+        regra: {
+            nome: "B3678/S34578",
+            born: [3, 6, 7, 8],
+            survive: [3, 4, 5, 7, 8]
+        }
+    },
+    {
+        id: 6,
+        nome: "Amoeba",
+        cor: "rgb(200,0,200)",
+        regra: {
+            nome: "B357/S1358",
+            born: [3, 5, 7],
+            survive: [1, 3, 5, 8]
+        }
+    },
+    {
+        id: 7,
+        nome: "Move",
+        cor: "rgb(130,130,130)",
+        regra: {
+            nome: "B368/S245",
+            born: [3, 6, 8],
+            survive: [2, 4, 5]
+        }
+    },
+    {
+        id: 8,
+        nome: "Pseudo Life",
+        cor: "rgb(230,50,0)",
+        regra: {
+            nome: "B357/S238",
+            born: [3, 5, 7],
+            survive: [2, 3, 8]
+        }
+    },
+    {
+        id: 9,
+        nome: "Diamoeba",
+        cor: "rgb(120,50,0)",
+        regra: {
+            nome: "B35678/S5678",
+            born: [3, 5, 6, 7, 8],
+            survive: [5, 6, 7, 8]
+        }
+    },
+    {
+        id: 10,
+        nome: "34",
+        cor: "rgb(120,50,100)",
+        regra: {
+            nome: "B34/S34",
+            born: [3, 4],
+            survive: [3, 4]
+        }
+    },
+    {
+        id: 11,
+        nome: "Long Life",
+        cor: "rgb(50,100,80)",
+        regra: {
+            nome: "B345/S5",
+            born: [3, 4, 5],
+            survive: [5]
+        }
+    },
+    {
+        id: 12,
+        nome: "Stains",
+        cor: "rgb(150,0,250)",
+        regra: {
+            nome: "B345/S5",
+            born: [3, 6, 7, 8],
+            survive: [2, 3, 5, 6, 7, 8]
+        }
+    },
+    {
+        id: 13,
+        nome: "Seeds",
+        cor: "rgb(240,240,0)",
+        regra: {
+            nome: "B2/S",
+            born: [2],
+            survive: []
+        }
+    },
+    {
+        id: 14,
+        nome: "Maze",
+        cor: "rgb(100,240,100)",
+        regra: {
+            nome: "B3/S12345",
+            born: [3],
+            survive: [1, 2, 3, 4, 5]
+        }
+    },
+    {
+        id: 15,
+        nome: "Coagulations",
+        cor: "rgb(150,210,0)",
+        regra: {
+            nome: "B378/S235678",
+            born: [3, 7, 8],
+            survive: [2, 3, 5, 6, 7, 8]
+        }
+    },
+    {
+        id: 16,
+        nome: "Walled Cities",
+        cor: "rgb(0,0,180)",
+        regra: {
+            nome: "B45678/S2345",
+            born: [4, 5, 6, 7, 8],
+            survive: [2, 3, 4, 5]
+        }
+    },
+    {
+        id: 17,
+        nome: "Gnarl",
+        cor: "rgb(220,150,0)",
+        regra: {
+            nome: "B1/1",
+            born: [1],
+            survive: [1]
+        }
+    },
+    {
+        id: 18,
+        nome: "Replicator",
+        cor: "rgb(0,150,120)",
+        regra: {
+            nome: "B1357/S1357",
+            born: [1, 3, 5, 7],
+            survive: [1, 3, 5, 7]
+        }
+    },
+    {
+        id: 19,
+        nome: "Mystery",
+        cor: "rgb(0,120,0)",
+        regra: {
+            nome: "B3458/S05678",
+            born: [3, 4, 5, 8],
+            survive: [0, 5, 6, 7, 8]
         }
     }
 ]
@@ -89,6 +259,7 @@ var corCalda = "rgb(255,64,0)";
 $(document).ready(function() {
     ctx.translate(0.5, 0.5);
     ctx.scale(1, 1);
+    $("#copy-ano").html(new Date().getFullYear());
     $(".indicador-velocidade").html(velocidadeSimulacao);
     $("#tamanho-cursor").attr("src", `recursos/tamanhos_cursor/${tamanhoCursor}.png`);
     $("#tamanho-cursor-2").attr("src", `recursos/tamanhos_cursor/${tamanhoCursor}.png`);
@@ -193,7 +364,7 @@ function iniciarSelects() {
     }
     for(var i = 0; i < automatosBidimensionais.length; i++) {
         var automato = automatosBidimensionais[i];
-        $("#seletorRegraBidimensional").append(`<option value="${automato.id}">${automato.nome + " " + automato.regra.nome}</option>`);
+        $("#seletorRegraBidimensional").append(`<option value="${automato.id}">${automato.nome + " - " + automato.regra.nome}</option>`);
     }
     for(var i = 1; i <= 100; i++) {
         if(i == 15) {
@@ -227,8 +398,8 @@ function preencherRegraBidimensional() {
     if(automato == null) {
         return;
     }
-    $("#bidimensionalBegin").val(automato.regra.begin.join(""));
-    $("#bidimensionalStep").val(automato.regra.step.join(""));
+    $("#bidimensionalBegin").val(automato.regra.born.join(""));
+    $("#bidimensionalStep").val(automato.regra.survive.join(""));
 }
 
 /**
@@ -344,11 +515,11 @@ function iniciarSimulacaoBidimensional() {
                 for(var j = 0; j < qtdBlocos; j++) {
                     var qtd = getQtdVizinhos(1, i, j);
                     if(mapa[i][j] == 1) {
-                        if(!automato.regra.step.includes(qtd)) {
+                        if(!automato.regra.survive.includes(qtd)) {
                             mapaAux[i][j] = 0;
                         }
                     } else {
-                        if(automato.regra.begin.includes(qtd)) {
+                        if(automato.regra.born.includes(qtd)) {
                             mapaAux[i][j] = 1;
                         }
                     }

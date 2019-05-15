@@ -4,7 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Automato Celular</title>
+    <meta name="description" content="Ambiente de simulação de automatos celulares unidimensionais, bidimensionais e wireworld. Simule autômatos life como Game of Life ou crie circuitos digitais com Wireworld">
+    <meta name="keywords" content="automatos celulares,automato celular,automato,game of life,wireworld,jogo da vida,glider,cellular automaton,life,gol">
+    <meta name="author" content="Vinícius Reif Biavatti">
+    <title>Automato LAB</title>
     <script src="plugins/jquery/jquery.min.js"></script>
     <link rel="stylesheet" href="plugins/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
@@ -12,6 +15,10 @@
 </head>
 
 <body>
+    <!-- SEO -->
+    <h1 style="display: none">Ambiente de Simulação de Automatos Celulares</h1>
+    <h2 style="display: none">Ambiente de Simulação de Automatos Celulares</h2>
+    <h3 style="display: none">Ambiente de Simulação de Automatos Celulares</h3>
     <!-- Modal -->
     <div class="modal fade" id="seletorAutomato" tabindex="-1" role="dialog" aria-labelledby="Automato Celular"
         aria-hidden="true">
@@ -48,10 +55,10 @@
                                 <select id="seletorRegraBidimensional" class="form-control"
                                     onchange="preencherRegraBidimensional()"></select>
                                 <br>
-                                <label>Regra de Nascimento (Begin):</label>
+                                <label>Regra de Nascimento (Born):</label>
                                 <input id="bidimensionalBegin" class="form-control" type="number" disabled>
                                 <br>
-                                <label>Regra de Sobrevivência (Step):</label>
+                                <label>Regra de Sobrevivência (Survive):</label>
                                 <input id="bidimensionalStep" class="form-control" type="number" disabled>
                             </div>
                         </div>
@@ -91,10 +98,10 @@
     <div class="">
         <div class="menu">
             <div class="menu-titulo">
-                <span>AUTOMATO LAB &copy;</span>
+                <h1>AUTOMATO LAB &copy;</h1>
             </div>
             <div class="menu-header">
-                <span>Automato Celular</span>
+                <h2>Automato Celular</h2>
                 <hr class="mt-0 mb-0">
             </div>
             <div id="botaoAutomato" class="menu-item" onclick="" title="Game Of Life B3/S23" data-toggle="modal"
@@ -103,7 +110,7 @@
                 <i class="fab fa-cloudsmith menu-item-icon"></i> <span id="nomeAutomato">Game Of Life</span>
             </div>
             <div class="menu-header">
-                <span>Simulação</span>
+                <h3>Simulação</h3>
                 <hr class="mt-0 mb-0">
             </div>
             <div id="botaoIniciar" class="menu-item" onclick="iniciar()">
@@ -352,8 +359,8 @@
 
     <span class="creditos">
         Criador: Vinícius Reif Biavatti<br>
-        github: vinibiavatti1<br>
-        Copyright &copy; 2019
+        github: <a href="https://github.com/vinibiavatti1" target="_blank">vinibiavatti1</a><br>
+        Copyright &copy; <span id="copy-ano"></span>
     </span>
 </body>
 <script src="app.js"></script>
