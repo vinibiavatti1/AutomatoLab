@@ -117,7 +117,7 @@ var automatosBidimensionais = [
         nome: "Stains",
         cor: "rgb(150,0,250)",
         regra: {
-            nome: "B345/S5",
+            nome: "B3678/S235678",
             born: [3, 6, 7, 8],
             survive: [2, 3, 5, 6, 7, 8]
         }
