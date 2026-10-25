@@ -1,3 +1,11 @@
+# ⚠️ DEPRECATED PROJECT
+
+> **Notice:** This repository is discontinued and no longer receives updates. **AutomatoLab** has evolved into a much more complete, modern, and polished project: **[Glider Lab](https://github.com/vinibiavatti1/GliderLab)**!
+>
+> 🚀 **[Click here to access the new Glider Lab Live Playground](https://vinibiavatti1.github.io/GliderLab/)**
+
+---
+
 # AutomatoLab
 Simulador de Autômatos Celulares
 
